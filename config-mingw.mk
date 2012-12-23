@@ -25,24 +25,27 @@ AR = $(PREFIX)ar
 E=.exe
 
 CFLAGS=$(CPPFLAGS) -g --std=gnu89 -D_WIN32_WINNT=0x0600
-LDFLAGS=-lm
+LDFLAGS=-lm -lws2_32 -lpsapi -liphlpapi 
 
 WIN_SRCS=$(wildcard src/win/*.c)
 WIN_OBJS=$(WIN_SRCS:.c=.o)
 
-RUNNER_CFLAGS=$(CFLAGS) -D_GNU_SOURCE # Need _GNU_SOURCE for strdup?
-RUNNER_LDFLAGS=$(LDFLAGS)
-RUNNER_LIBS=-lws2_32 -lpsapi -liphlpapi
+RUNNER_CFLAGS=$(CFLAGS) -DUSING_UV_SHARED -D_GNU_SOURCE # Need _GNU_SOURCE for strdup?
+RUNNER_LDFLAGS= $(LDFLAGS)
 RUNNER_SRC=test/runner-win.c
 
 libuv.a: $(WIN_OBJS) src/fs-poll.o src/inet.o src/uv-common.o
 	$(AR) rcs $@ $^
 
+libuv.$(SOEXT): override CFLAGS += -DBUILDING_UV_SHARED
+libuv.$(SOEXT): $(WIN_OBJS) src/fs-poll.o src/inet.o src/uv-common.o
+	$(CC) -shared -o $@ $^ $(LDFLAGS)
+
 src/%.o: src/%.c include/uv.h include/uv-private/uv-win.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 src/win/%.o: src/win/%.c include/uv.h include/uv-private/uv-win.h src/win/internal.h
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 clean-platform:
 	-rm -f src/win/*.o

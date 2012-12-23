@@ -379,7 +379,7 @@ static WCHAR* search_path(const WCHAR *file,
  * Quotes command line arguments
  * Returns a pointer to the end (next char to be written) of the buffer
  */
-WCHAR* quote_cmd_arg(const WCHAR *source, WCHAR *target) {
+UV_EXTERN WCHAR* quote_cmd_arg(const WCHAR *source, WCHAR *target) {
   size_t len = wcslen(source);
   size_t i;
   int quote_hit;
@@ -453,7 +453,7 @@ WCHAR* quote_cmd_arg(const WCHAR *source, WCHAR *target) {
 }
 
 
-uv_err_t make_program_args(char** args, int verbatim_arguments, WCHAR** dst_ptr) {
+UV_EXTERN uv_err_t make_program_args(char** args, int verbatim_arguments, WCHAR** dst_ptr) {
   char** arg;
   WCHAR* dst = NULL;
   WCHAR* temp_buffer = NULL;
@@ -572,7 +572,7 @@ static void check_required_vars_contains_var(env_var_t* required, int count,
  * these get defined if the input environment block does not contain any
  * values for them.
  */
-uv_err_t make_program_env(char* env_block[], WCHAR** dst_ptr) {
+UV_EXTERN uv_err_t make_program_env(char* env_block[], WCHAR** dst_ptr) {
   WCHAR* dst;
   WCHAR* ptr;
   char** env;
