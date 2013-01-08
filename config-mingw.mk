@@ -20,6 +20,7 @@
 
 # Use make -f Makefile.gcc PREFIX=i686-w64-mingw32-
 # for cross compilation
+SHELL = C:/Windows/System32/cmd.exe
 CC = $(PREFIX)gcc
 AR = $(PREFIX)ar
 E=.exe
@@ -48,7 +49,7 @@ src/win/%.o: src/win/%.c include/uv.h include/uv-private/uv-win.h src/win/intern
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
 clean-platform:
-	-rm -f src/win/*.o
+	-rm -f src/win/*.o src/*.o
 
 distclean-platform:
-	-rm -f src/win/*.o
+	-rm -f src/win/*.o src/*.o
