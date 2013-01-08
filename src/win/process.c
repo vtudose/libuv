@@ -379,7 +379,7 @@ static WCHAR* search_path(const WCHAR *file,
  * Quotes command line arguments
  * Returns a pointer to the end (next char to be written) of the buffer
  */
-UV_EXTERN WCHAR* quote_cmd_arg(const WCHAR *source, WCHAR *target) {
+UV_EXTERN WCHAR* uv_quote_cmd_arg(const WCHAR *source, WCHAR *target) {
   size_t len = wcslen(source);
   size_t i;
   int quote_hit;
@@ -524,7 +524,7 @@ UV_EXTERN uv_err_t make_program_args(char** args, int verbatim_arguments, WCHAR*
       pos += arg_len - 1;
     } else {
       /* Quote/escape, if needed. */
-      pos = quote_cmd_arg(temp_buffer, pos);
+      pos = uv_quote_cmd_arg(temp_buffer, pos);
     }
 
     *pos++ = *(arg + 1) ? L' ' : L'\0';

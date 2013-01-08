@@ -645,7 +645,7 @@ TEST_IMPL(spawn_detect_pipe_name_collisions_on_windows) {
 
 
 uv_err_t make_program_args(char** args, int verbatim_arguments, WCHAR** dst_ptr);
-WCHAR* quote_cmd_arg(const WCHAR *source, WCHAR *target);
+WCHAR* uv_quote_cmd_arg(const WCHAR *source, WCHAR *target);
 
 TEST_IMPL(argument_escaping) {
   const WCHAR* test_str[] = {
@@ -680,7 +680,7 @@ TEST_IMPL(argument_escaping) {
   test_output = calloc(count, sizeof(WCHAR*));
   for (i = 0; i < count; ++i) {
     test_output[i] = calloc(2 * (wcslen(test_str[i]) + 2), sizeof(WCHAR));
-    quote_cmd_arg(test_str[i], test_output[i]);
+    uv_quote_cmd_arg(test_str[i], test_output[i]);
     wprintf(L"input : %s\n", test_str[i]);
     wprintf(L"output: %s\n", test_output[i]);
     total_size += wcslen(test_output[i]) + 1;
