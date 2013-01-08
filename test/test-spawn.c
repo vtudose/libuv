@@ -742,7 +742,8 @@ TEST_IMPL(environment_creation) {
   WCHAR* env;
 
   for (i = 0; i < sizeof(environment) / sizeof(environment[0]) - 1; i++) {
-    ptr += uv_utf8_to_utf16(environment[i], ptr, expected + sizeof(expected) - ptr);
+    ptr += MultiByteToWideChar(CP_UTF8, 0, environment[i], -1, ptr, 
+                               expected + sizeof(expected) - ptr);
   }
 
   memcpy(ptr, L"SYSTEMROOT=", sizeof(L"SYSTEMROOT="));
